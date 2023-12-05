@@ -23,14 +23,18 @@ public class RestTemplateBuilderConfig {
     @Bean
     RestTemplateBuilder restTemplateBuilder(RestTemplateBuilderConfigurer configurer){
 
-    // The "configurer" takes the new instance of RestTemplateBuilder and configures it with spring boot defaults
-        RestTemplateBuilder builder = configurer.configure(new RestTemplateBuilder());
+//    // The "configurer" takes the new instance of RestTemplateBuilder and configures it with spring boot defaults
+//        RestTemplateBuilder builder = configurer.configure(new RestTemplateBuilder());
+//
+//        //To setup the default base path for API calls, we use "DefaultUriBuilderFactory"
+//        DefaultUriBuilderFactory uriBuilderFactory = new
+//                                                    DefaultUriBuilderFactory(rootUrl);
+//
+//        //return a configured RestTemplateBuilder configured with base URI for API calls
+//        return builder.uriTemplateHandler(uriBuilderFactory);
 
-        //To setup the default base path for API calls, we use "DefaultUriBuilderFactory"
-        DefaultUriBuilderFactory uriBuilderFactory = new
-                                                    DefaultUriBuilderFactory(rootUrl);
-
-        //return a configured RestTemplateBuilder configured with base URI for API calls
-        return builder.uriTemplateHandler(uriBuilderFactory);
+        //utilizing builder pattern
+        return configurer.configure(new RestTemplateBuilder())
+                .uriTemplateHandler(new DefaultUriBuilderFactory(rootUrl));
     }
 }
