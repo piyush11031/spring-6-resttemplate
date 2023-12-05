@@ -11,26 +11,34 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 @Configuration //Annotate our config file with Configuration annotation
 public class RestTemplateBuilderConfig {
 
-    //We externalize the property, so we can configure it at runtime
-    //We add in a new property for root URL, then we're using spring expression language to get this property
-    //This property will be loaded in from application.properties
-    //Now, if we have a different URL to go through we can configure a different spring profile
+    //Externalizing the property, so we can configure it at runtime
     @Value("${rest.template.rootUrl}")
     String rootUrl;
+
+    @Value("${rest.template.username}")
+    String USERNAME;
+
+    @Value("${rest.template.password}")
+    String PASSWORD;
 
     //We'll be returning back a bean of RestTemplateBuilder which is configured with spring boot defaults.
     //But because spring boot provides us with lot of defaults it gets a bit complext to configure it
     @Bean
     RestTemplateBuilder restTemplateBuilder(RestTemplateBuilderConfigurer configurer){
 
-    // The "configurer" takes the new instance of RestTemplateBuilder and configures it with spring boot defaults
-        RestTemplateBuilder builder = configurer.configure(new RestTemplateBuilder());
+//    // The "configurer" takes the new instance of RestTemplateBuilder and configures it with spring boot defaults
+//        RestTemplateBuilder builder = configurer.configure(new RestTemplateBuilder());
+//
+//        //To setup the default base path for API calls, we use "DefaultUriBuilderFactory"
+//        DefaultUriBuilderFactory uriBuilderFactory = new
+//                                                    DefaultUriBuilderFactory(rootUrl);
+//
+//        RestTemplateBuilder builderWithAuth = builder.basicAuthentication(USERNAME, PASSWORD); //Create a builder with Auth
 
-        //To setup the default base path for API calls, we use "DefaultUriBuilderFactory"
-        DefaultUriBuilderFactory uriBuilderFactory = new
-                                                    DefaultUriBuilderFactory(rootUrl);
-
-        //return a configured RestTemplateBuilder configured with base URI for API calls
-        return builder.uriTemplateHandler(uriBuilderFactory);
+//
+//        //Utilizing Builder pattern to setup HTTP Basic Auth and Setting root url
+        return configurer.configure(new RestTemplateBuilder())
+                .basicAuthentication(USERNAME, PASSWORD)
+                .uriTemplateHandler(new DefaultUriBuilderFactory(rootUrl));
     }
 }

@@ -95,10 +95,13 @@ class BeerClientMockTest {
     //Using Intellij refactor feature to Extract the mocked GET operation
     private void mockGetOperation() {
         server.expect(method(HttpMethod.GET))
+                .andExpect(header(authHeader, base64String))
                 .andExpect(requestToUriTemplate(URL +
                         BeerClientImpl.GET_BEER_BY_ID_PATH, beerDTO.getId()))
                 .andRespond(withSuccess(dtoJson, MediaType.APPLICATION_JSON));
     }
+    private static final String authHeader = "Authorization";
+    private static final String base64String = "Basic dXNlcjE6cGFzc3dvcmQ=";
 
     @Test
     void testListBeers() throws JsonProcessingException {
@@ -108,6 +111,7 @@ class BeerClientMockTest {
 
         //Setting up the mock server to respond back with the "payload" when it receives an HTTP GET method with the specified URL
         server.expect(method(HttpMethod.GET))
+                .andExpect(header(authHeader, base64String))
                 .andExpect(requestTo(URL + BeerClientImpl.GET_BEER_PATH))
                 .andRespond(withSuccess(payload, MediaType.APPLICATION_JSON));
 
@@ -127,6 +131,7 @@ class BeerClientMockTest {
                 .build().toUri();
 
         server.expect(method(HttpMethod.GET))
+                .andExpect(header(authHeader, base64String))
                 .andExpect(requestTo(uri))
                 .andExpect(queryParam("beerName", "ALE"))
                 .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
@@ -156,6 +161,7 @@ class BeerClientMockTest {
 
         //Handles the POST method
         server.expect(method(HttpMethod.POST))
+                .andExpect(header(authHeader, base64String))
                 .andExpect(requestTo(URL + BeerClientImpl.GET_BEER_PATH))
                                 .andRespond(withAccepted().location(uri)); //setting location
 
@@ -171,6 +177,7 @@ class BeerClientMockTest {
     void testUpdateBeer() {
 
         server.expect(method(HttpMethod.PUT))
+                .andExpect(header(authHeader, base64String))
                 .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, beerDTO.getId()))
                 .andRespond(withNoContent());
 
@@ -185,6 +192,7 @@ class BeerClientMockTest {
     @Test
     void testDeleteNotFound() {
         server.expect(method(HttpMethod.DELETE))
+                .andExpect(header(authHeader, base64String))
                 .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, beerDTO.getId()))
                 .andRespond(withResourceNotFound()); //Respond with resource not found
 
@@ -199,6 +207,7 @@ class BeerClientMockTest {
     void testDeleteBeer() {
 
         server.expect(method(HttpMethod.DELETE))
+                .andExpect(header(authHeader, base64String))
                 .andExpect(requestToUriTemplate(URL + BeerClientImpl.GET_BEER_BY_ID_PATH, beerDTO.getId()))
                 .andRespond(withNoContent());
 
