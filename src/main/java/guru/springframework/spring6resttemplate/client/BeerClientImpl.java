@@ -25,8 +25,8 @@ public class BeerClientImpl implements BeerClient {
     //Spring Boot provides us with RestTemplateBuilder. It get pre-configured with sensible defaults.
     private final RestTemplateBuilder restTemplateBuilder;
 
-    private static String GET_BEER_PATH = "/api/v1/beer";
-    private static String GET_BEER_BY_ID_PATH = "/api/v1/beer/{beerId}";
+    public static final String GET_BEER_PATH = "/api/v1/beer";
+    public static final String GET_BEER_BY_ID_PATH = "/api/v1/beer/{beerId}";
 
     @Override
     public void deleteBeer(UUID id) {
@@ -95,7 +95,7 @@ public class BeerClientImpl implements BeerClient {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromPath(GET_BEER_PATH);
 
         //It will be an optional parameter
-        if(beerName != null && beerStyle ==null) {
+        if(beerName != null) {
             uriComponentsBuilder.queryParam("beerName", beerName);
         }
         if(beerStyle != null) {
@@ -110,7 +110,6 @@ public class BeerClientImpl implements BeerClient {
         if(showInventory != null) {
             uriComponentsBuilder.queryParam("showInventory", showInventory);
         }
-        uriComponentsBuilder.queryParam("pageNumber", pageNumber);
 
         //Response entity gives us everything in the response
         //We use PageImpl instead of Page, bcz Page  is an interface not a hard implementation
