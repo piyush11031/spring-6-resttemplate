@@ -15,12 +15,6 @@ public class RestTemplateBuilderConfig {
     @Value("${rest.template.rootUrl}")
     String rootUrl;
 
-    @Value("${rest.template.username}")
-    String USERNAME;
-
-    @Value("${rest.template.password}")
-    String PASSWORD;
-
     //We'll be returning back a bean of RestTemplateBuilder which is configured with spring boot defaults.
     //But because spring boot provides us with lot of defaults it gets a bit complext to configure it
     @Bean
@@ -38,7 +32,6 @@ public class RestTemplateBuilderConfig {
 //
 //        //Utilizing Builder pattern to setup HTTP Basic Auth and Setting root url
         return configurer.configure(new RestTemplateBuilder())
-                .basicAuthentication(USERNAME, PASSWORD)
                 .uriTemplateHandler(new DefaultUriBuilderFactory(rootUrl));
     }
 }
